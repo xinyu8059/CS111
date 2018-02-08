@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>File Descriptor Management</TITLE>
+</HEAD>
+<BODY>
+<center>
+<h1> File Descriptor Management </h1>
+</CENTER>
+<P>
+<h2>File Descriptors</h2>
+The POSIX file access APIs 
+(e.g. <em>read(2)</em> and <em>write(2)</em>) operate on file descriptors.  
+A file descriptor is an integer*. 
+<br>
+Normally, when a process starts, it has (at least) three already-open file descriptors:
+<UL>
+	0: standard input (read only)<br>
+	1: standard output (write only)<br>
+	2: standard error (write only)<br>
+</UL>
+As additional files are opened 
+(e.g. with <em>open(2)</em>, <em>creat(2)</em> or <em>pipe(2)</em>) 
+each is assigned the lowest unused file descriptor.
+<P>
+(*If you want a little more truth, these integers are indexes into a
+ table of open files that the Operating System maintains for 
+ each process)
+
+<h2>Input/Output Redirection</h2>
+Two other operations can be used to manipulate file descriptors:
+<UL>
+    <LI> <em>close(2)</em> closes the file on the specified file descriptor, 
+		making that file descriptor available for reuse.</LI>
+    <LI> <em>dup(2)</em> allocates the lowest available file descriptor, 
+    		and creates another reference to the open file instance 
+		on the specified file descriptor.</LI>
+</UL>
+Input/output redirection is accomplished by:
+<UL>
+	<li>opening the new input/output file</li>
+	<li>closing the file descriptor (0, 1, 2) to be replaced</li>
+	<li>duplicate the new input/output file to the (newly vacated) file descriptor
+	    to be replaced</li>
+	<li>close the (now redundant) file descriptor 
+	    on to which that file was originally opened</li>
+</UL>
+
+<h2>Example: input redirection</h2>
+<ul><tt><pre>
+int ifd = open(newfile, O_RDONLY);
+if (ifd >= 0) {
+	close(0);
+	dup(ifd);
+	close(ifd);
+}
+</pre></tt></ul>
+
+<h2>Example: output redirection</h2>
+<ul><tt><pre>
+int ofd = creat(newfile, 0666);
+if (ofd >= 0) {
+	close(1);
+	dup(ofd);
+	close(ofd);
+}
+</pre></tt></ul>
+</BODY>
+</HTML>

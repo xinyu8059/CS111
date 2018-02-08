@@ -1,0 +1,82 @@
+CS111 Project 0: Warm-Up
+
+NAME: Natasha Sarkar
+EMAIL: nat41575@gmail.com
+ID: 904743795
+
+README
+
+Files Included in Submission lab0-904743795.tar.gz:
+
+lab0.c
+
+A C source file that is compiled into the lab0 program when make is
+run. It copies standardinput to standard output. It supports the
+following options:
+
+--input=filename ... use the specified file as standard input
+
+--output=filename ... use the specified file as standard output 
+(creates the file if it is not present, overwrites otherwise)
+
+--segfault ... forces a segmentation fault
+
+--catch ... registers a SIGSEGV handler that catches the segmentation
+fault and logs an error message
+
+
+Makefile
+
+Supports the following targets:
+
+default ... build the lab0 executable (with -Wall and -Wextra options)
+
+check ... runs the checkscript.sh script to run a few quick tests of 
+the program
+
+clean ... deletes all files created by the Makefile
+
+dist ... builds the distribution tarball
+
+
+checkscript.sh
+
+A bash script that is run when the make check command is run. Runs a
+few quick tests to determine that the program is working properly. 
+
+The checks were:
+
+1) Ran the program with an input file (included in the 
+distrubtion file), create an output file, and see that the program
+exited with an exit code of 0.
+
+2) Compared that the input file and the output file had the
+same content after the program was run.
+
+3) Ensured that the correct error is thrown when unable to write
+to the output file by creating an output file, removing its
+write permissions, and then attempting to run the program with that
+file as the output file.
+
+4) Check that the segfault handler works by running with both
+--segfault and --catch options.
+
+5) Attempt to run the program with an input file that doesn't exist
+to check that the correct error is thrown when attempting to open
+the file.
+
+
+file1
+
+A file used as test input for checkscript.sh.
+
+
+backtrace.png
+
+Screenshot of a segmentation fault and associated stack-trace
+
+
+breakpoint.png
+
+Screenshot of a breakpoint and variable inspection
+
