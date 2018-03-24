@@ -4,7 +4,8 @@ ID: 904743795
 
 FILES
 
-lab3a.c ... a C/C++ source module that compiles cleanly
+lab3a.c ... a C/C++ source module that compiles cleanly into a program that analyzes a file system image and produces
+a file with csv summaries of what it finds
 
 Makefile ... 3 targets
 	
