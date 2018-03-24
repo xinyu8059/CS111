@@ -52,13 +52,6 @@ void set_mode(void) {
 	atexit(restore);
 
 	tcgetattr(STDIN_FILENO, &mode);
-	
-	//what I would do to accomplish the goal
-	/* 
-	mode.c_lflag &= ~(ICANON | ECHO);
-	mode.c_cc[VMIN] = 1;
-	mode.c_cc[VTIME] = 0;
-	*/
 
 	//what the professor suggested to do to accomplish the goal
 	mode.c_iflag = ISTRIP;
@@ -235,7 +228,7 @@ int main (int argc, char* argv[]) {
 
 			close(pipe_ctop[0]);
 			close(pipe_ptoc[1]);
-		    shell_exit_status();
+		    	shell_exit_status();
 			exit(0);
 
 		} else { //fork failed
