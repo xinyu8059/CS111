@@ -59,8 +59,8 @@ int main(int argc, char* argv[]) {
 
 	struct option options[] = {
 		{"port", required_argument, NULL, 'p'},
-    	{"compress", no_argument, NULL, 'c'},
-    	{0, 0, 0, 0}
+    		{"compress", no_argument, NULL, 'c'},
+    		{0, 0, 0, 0}
 	};
 
 	int portno = 0;
