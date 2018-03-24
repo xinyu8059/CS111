@@ -255,10 +255,10 @@ int main(int argc, char* argv[]) {
 	temp = mraa_aio_init(A0);
 
 	if (temp== NULL) {
-        fprintf(stderr, "Failed to initialize AIO\n");
-        mraa_deinit();
-        return EXIT_FAILURE;
-    }
+		fprintf(stderr, "Failed to initialize AIO\n");
+		mraa_deinit();
+		return EXIT_FAILURE;
+    	}
 
 	struct pollfd pollInput; 
 	pollInput.fd = sock; 
