@@ -9,9 +9,9 @@ Lab 1A: 100%
 
 Lab 1B: 100%
 
-Lab 2A: Not yet graded
+Lab 2A: 98%
 
-Lab 2B: Not yet graded
+Lab 2B: 99%
 
 Lab 3A: 96%
 
@@ -19,6 +19,6 @@ Lab 3B: Not yet graded
 
 Lab 4A: 100%
 
-Lab 4B: Not yet graded
+Lab 4B: 100%
 
 Lab 4C: Not yet graded
