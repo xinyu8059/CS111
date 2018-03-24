@@ -1,0 +1,42 @@
+NAME: Natasha Sarkar
+EMAIL: nat41575@gmail.com
+ID: 904743795
+
+CS111 Winter 2018
+Project 1a
+
+Files:
+
+
+lab1a.c
+
+Source code written in C. When run without any options, it puts the 
+keyboard into non-canonical input mode with no echo, and reads 
+input from the keyboard and writes the received characters back out
+to the display.
+
+Supports a --shell option, which forks to create a new process and
+then execs a shell (/bin/bash). Reads input from keyboard, echoes
+it to output, and forwards it to the shell. Reads input fro the
+shell and writes it to output.
+
+
+Makefile
+
+Supports three targets:
+
+default ... makes the executable file lab1a, uses -Wextra and -Wall
+
+clean ... removes any files created by the Makefile
+
+dist ... makes the distribution tarball
+
+
+Testing methodology
+
+To test this program, I ran it on the terminal to make sure that 
+the input/output was being processed as it was suppsoed to.
+
+For example, I ran ./lab1a --shell and then typed in ls, to make sure
+that ls was in fact listing the contents of the current directory.
+The sanity check also helped with testing and debugging my code.
