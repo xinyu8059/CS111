@@ -1,0 +1,15 @@
+Total: 862 samples
+     747  86.7%  86.7%      855  99.2% thread_function
+      88  10.2%  96.9%       88  10.2% __strcmp_sse42
+      13   1.5%  98.4%       56   6.5% SortedList_lookup
+       5   0.6%  99.0%       50   5.8% SortedList_insert
+       3   0.3%  99.3%        7   0.8% main
+       2   0.2%  99.5%        4   0.5% __random
+       2   0.2%  99.8%        2   0.2% __random_r
+       1   0.1%  99.9%        1   0.1% __GI___clock_gettime
+       1   0.1% 100.0%        1   0.1% hash_num
+       0   0.0% 100.0%      855  99.2% __clone
+       0   0.0% 100.0%        7   0.8% __libc_start_main
+       0   0.0% 100.0%        7   0.8% _start
+       0   0.0% 100.0%        4   0.5% rand
+       0   0.0% 100.0%      855  99.2% start_thread

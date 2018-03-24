@@ -1,0 +1,18 @@
+NAME: Natasha Sarkar
+EMAIL: nat41575@gmail.com
+ID: 904743795
+
+BeagleBone S/N: BBGW17051247
+MAC: 2CF7F10663DF
+
+Files:
+
+my_beaglebone.jpg ... a selfie of me holding my assembled Beaglebone.
+
+connected.jpg ... a screenshot showing that I gave it a name and configured network access
+
+copy.png ... a screenshot where I showed that I copied a program to my Beaglebone
+
+build_run.png ... a screenshot from a WIFI SSH session where I built and ran a trivial program
+
+git.png ... a screenshot from a WIFI SSH session where I installed git and cloned a repository

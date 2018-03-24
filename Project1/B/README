@@ -1,0 +1,40 @@
+NAME: Natasha Sarkar
+EMAIL: nat41575@gmail.com
+ID: 904743795
+
+Files:
+
+Makefile
+	
+Five targets:
+
+default ... compiles lab1b-server.c into an executable called lab1b-server and
+			lab1b-client.c into an executable called lab1b-client. Both are
+			compiled with the -Wall and -Wextra options
+
+client ... compiles lab1b-client.c into an executable called lab1b-client with
+		   the -Wall and -Wextra options
+
+server ... compiles lab1b-server.c into an executable called lab1b-server with
+		   the -Wall and -Wextra options
+
+dist ... makes the distribution tarball
+
+clean ... removes the distribution tarball and the executables compiled by default
+
+lab1b-server.c
+
+Source code for the server program. It will connect to the
+client, receive the client's commands and send them to the
+shell. It will then "serve" the client the outputs of those
+commands. Port specified with the mandatory --port= option.
+Supports a --compress option.
+
+
+lab1b-client.c
+
+Source code for the client program. It will open a connection
+to the server with the mandatory --port= option. The client
+will send input from the keyboard to the socket (while echoing
+it to the display).
+

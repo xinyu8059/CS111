@@ -1,0 +1,141 @@
+NAME: Natasha Sarkar
+EMAIL: nat41575@gmail.com
+ID: 904743795
+
+Files:
+
+lab2_add.c
+	Compiles into lab2_add. Implements and tests a shared variable add function.
+
+SortdList.h 
+	    A header file describing the interfaces for linked list operations
+
+SortedList.c
+	A C module that implements insert, delete, lookup, and length methods for
+	a sorted doubly linked list
+
+lab2_list.c
+	Compiles into lab2_list. Implements specified command line options. Runs
+	multiple threads to add to a list and delete items in a synchronized manner
+
+lab2_add.csv 
+	     Contains all results for Part-1 tests
+
+lab2_list.csv
+	Contains all results for Part-2 tests
+
+lab2_add.gp 
+	    Runs gnuplot on the data in lab2_add.csv 
+
+lab2_list.gp
+	Runs gnuplot on the data in lab2_list.csv
+
+
+Makefile
+
+	default ... builds program lab2_add and lab2_list from the C source files
+
+	build ... same as default
+
+	tests ... tests lab2_add and lab2_list, pipes output to the .csv files
+
+	graphs ... runs gnuplot with lab2_add.gp and lab2_list.gp
+
+	dist ... makes the distribution tarball
+
+	clean .. deletes programs and output created by Makefile
+
+
+GRAPHS
+
+	lab2_add-1.png ... threads and iterations required to generate a failure (with and
+		       without yields)
+
+		       lab2_add-2.png ... average time per operation with and without yields.
+
+		       lab2_add-3.png ... average time per (single threaded) operation vs. the number of
+		        	      iterations.
+
+				      lab2_add-4.png ... threads and iterations that can run successfully with yields 
+				      		     under each of the synchronization options.
+
+						     lab2_add-5.png ... average time per (protected) operation vs. the number of threads.
+
+						     lab2_list-1.png ... average time per (single threaded) unprotected operation vs. 
+						     		     number of iterations (illustrating the correction of the per-operation cost for 
+								     	    the list length).
+
+									    lab2_list-2.png ... threads and iterations required to generate a failure (with and 
+									    		    without yields).
+
+											    lab2_list-3.png ... iterations that can run (protected) without failure.
+											    
+											    lab2_list-4.png ... (length-adjusted) cost per operation vs the number of threads 
+											    		    for the various synchronization options.
+
+
+
+QUESTION 2.1.1 - causing conflicts:
+	 
+	 It takes many iterations before errors are seen, because if the number
+	 of iterations is small enough, then each thread can execute the
+	 entire add function in one time slice. Thus, no thread is interrupted
+	 and the race condition errors that may occur with multithreading do
+	 not occur.
+
+	 A significantly smaller number of iterations so seldom fails for the
+	 same reason; with a smaller number of iterations, the thread is
+	 likely to complete the entire add function within one time slice.
+
+
+QUESTION 2.1.2 - cost of yielding:
+
+	 --yield runs are so much slower because it takes time to interrupt the
+	 threads and switch to a new thread. 
+
+	 The additional time is going toward switching between threads.
+
+	 It is not possible to get valid per-operation timings with the --yield
+	 option because we can't accurately take into account the time it
+	 takes to switch.
+
+
+QUESTION 2.1.3 - measurement errors
+	 
+	 The average cost per operation drops with increasing iterations because
+	 iterations are quick and more iterations compensate for the overhead
+	 of creating a new thread. 
+
+	 The plot shows that the cost per iteration decreases exponentially,
+	 meaning that it will eventually reach some level of stability. At this
+	 point, we can know what the "correct" cost is.
+
+
+QUESTION 2.1.4
+	 
+	 For a low number of threads, there is less overhead for all of the options,
+	 so they perform similarly.
+
+	 As the number of threads rise, there is more overhead, so each thread 
+	 spends more time waiting for locks to be released instead of performing
+	 the operations.
+
+
+QUESTION 2.2.1 - scalability of Mutex
+	 
+	 In part 1, increasing threads seemed to correlate with an increase in the cost
+	 of mutex-protected operations. In part 2, however, an increased number of threads
+	 didn't seem to affect the cost of mutex-protected operations.
+
+	 When a linked list mutex locks, it stays locked for a much longer time, so
+	 context switching occurs less and there is less overhead associated with it. 
+
+
+QUESTION 2.2.2 - scalability of spin locks
+
+	 For a low number of threads, spin locks seem to cost less than mutexes, but as
+	 the number of threads increase, the spin locks start costing more than the 
+	 mutexes. This is more evident in the add program than in the list program.
+	 With a spin lock, the CPU gives some time to the spinning threads, and they
+	 just waste this CPU time spinning. With a mutex, however, if the section is locked,
+	 the CPU will ignore it until it is unlocked and not waste any time on it. 
