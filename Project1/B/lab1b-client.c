@@ -73,8 +73,8 @@ int main(int argc, char* argv[]) {
 	struct option options[] = {
 		{"port", required_argument, NULL, 'p'},
    		{"log", required_argument, NULL, 'l'},
-    	{"compress", no_argument, NULL, 'c'},
-    	{0, 0, 0, 0}
+    		{"compress", no_argument, NULL, 'c'},
+    		{0, 0, 0, 0}
 	};
 
 	int portno = 0;
@@ -158,8 +158,8 @@ int main(int argc, char* argv[]) {
 	server_address.sin_port = htons(portno);
 
 	if (connect(sock, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
-      fprintf(stderr, "Failure to connect on client side.\n");
-      exit(1);
+      		fprintf(stderr, "Failure to connect on client side.\n");
+      		exit(1);
   	}
 
 	/*
