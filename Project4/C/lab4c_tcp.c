@@ -77,8 +77,8 @@ void shutdown_and_exit(){
 	char out[200];
 	sprintf(out, "%02d:%02d:%02d SHUTDOWN", curr_time->tm_hour, 
     		curr_time->tm_min, curr_time->tm_sec);
-    print(out, TO_SERVER);
-    exit(0);
+    	print(out, TO_SERVER);
+   	exit(0);
 }
 
 /* prints out the time stamp and temperature */
@@ -89,10 +89,10 @@ void time_stamp() {
 		int t = temp * 10;
 		curr_time = localtime(&my_clock.tv_sec);
 		char out[200];
-    	sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
-    			curr_time->tm_min, curr_time->tm_sec, t/10, t%10);
-    	print(out, TO_SERVER);
-    	next_time = my_clock.tv_sec + period; 
+		sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
+				curr_time->tm_min, curr_time->tm_sec, t/10, t%10);
+		print(out, TO_SERVER);
+		next_time = my_clock.tv_sec + period; 
 	}
 }
 
@@ -167,8 +167,8 @@ int main(int argc, char* argv[]) {
 		{"log", required_argument, NULL, 'l'},
 		{"id", required_argument, NULL, 'i'},
    		{"scale", required_argument, NULL, 's'},
-    	{"host", required_argument, NULL, 'h'},
-    	{0, 0, 0, 0}
+		{"host", required_argument, NULL, 'h'},
+		{0, 0, 0, 0}
 	};
 
 	int opt; //parse options
@@ -179,7 +179,7 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'l':
 				file = fopen(optarg, "w+");
-            	if(file == NULL) {
+            	if (file == NULL) {
 	           		fprintf(stderr, "Logfile invalid\n");
 					exit(1);
 				}
@@ -238,8 +238,8 @@ int main(int argc, char* argv[]) {
 		    server->h_length);
 	server_address.sin_port = htons(port);
 	if (connect(sock, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
-      fprintf(stderr, "Failure to connect on client side.\n");
-      exit(1);
+      		fprintf(stderr, "Failure to connect on client side.\n");
+      		exit(1);
   	}
 
 	/* Immediately send (and log) an ID terminated with a newline. */
@@ -261,24 +261,24 @@ int main(int argc, char* argv[]) {
     }
 
 	struct pollfd pollInput; 
-    pollInput.fd = sock; 
-    pollInput.events = POLLIN; 
+	pollInput.fd = sock; 
+	pollInput.events = POLLIN; 
 
-    char *input;
-    input = (char *)malloc(1024 * sizeof(char));
-    if(input == NULL) {
-    	fprintf(stderr, "Could not allocate input buffer\n");
-    	exit(1);
-    }
+	char *input;
+	input = (char *)malloc(1024 * sizeof(char));
+	if(input == NULL) {
+		fprintf(stderr, "Could not allocate input buffer\n");
+		exit(1);
+	}
 
-    while(1) {
-  		time_stamp();
-    	int ret = poll(&pollInput, 1, 0);
-    	if(ret) {
-    		server_input(input);
-    	}
+	while(1) {
+		time_stamp();
+		int ret = poll(&pollInput, 1, 0);
+		if(ret) {
+			server_input(input);
+		}
 	}
 
 	mraa_aio_close(temp);
-    exit(0);
+	exit(0);
 }
