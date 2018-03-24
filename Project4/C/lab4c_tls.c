@@ -85,10 +85,10 @@ void shutdown_and_exit(){
 	char out[200];
 	sprintf(out, "%02d:%02d:%02d SHUTDOWN", curr_time->tm_hour, 
     		curr_time->tm_min, curr_time->tm_sec);
-    print(out, TO_SERVER);
-    SSL_shutdown(ssl);
-    SSL_free(ssl);
-    exit(0);
+    	print(out, TO_SERVER);
+    	SSL_shutdown(ssl);
+    	SSL_free(ssl);
+    	exit(0);
 }
 
 /* prints out the time stamp and temperature */
@@ -99,10 +99,10 @@ void time_stamp() {
 		int t = temp * 10;
 		curr_time = localtime(&my_clock.tv_sec);
 		char out[200];
-    	sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
+    		sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
     			curr_time->tm_min, curr_time->tm_sec, t/10, t%10);
-    	print(out, TO_SERVER);
-    	next_time = my_clock.tv_sec + period; 
+    		print(out, TO_SERVER);
+    		next_time = my_clock.tv_sec + period; 
 	}
 }
 
@@ -177,8 +177,8 @@ int main(int argc, char* argv[]) {
 		{"log", required_argument, NULL, 'l'},
 		{"id", required_argument, NULL, 'i'},
    		{"scale", required_argument, NULL, 's'},
-    	{"host", required_argument, NULL, 'h'},
-    	{0, 0, 0, 0}
+    		{"host", required_argument, NULL, 'h'},
+    		{0, 0, 0, 0}
 	};
 
 	int opt; //parse options
@@ -248,32 +248,31 @@ int main(int argc, char* argv[]) {
 		    server->h_length);
 	server_address.sin_port = htons(port);
 	if (connect(sock, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
-      fprintf(stderr, "Failure to connect on client side.\n");
-      exit(1);
+      		fprintf(stderr, "Failure to connect on client side.\n");
+      		exit(1);
 	}
 
  	SSL_library_init();
-    SSL_load_error_strings();
-    OpenSSL_add_all_algorithms();
-    new_context = SSL_CTX_new(TLSv1_client_method());
-    if (new_context == NULL) {
-        fprintf(stderr, "Unable to get SSL context\n");
-        exit(2);
-    }
-    ssl = SSL_new(new_context);
-    if (ssl == NULL) {
-        fprintf(stderr, "Unable to complete SSL setup\n");
-        exit(2);
-    }
-    if (!SSL_set_fd(ssl, sock)) {
-        fprintf(stderr, "Unable to associate fd w/SSL\n");
-        exit(2);
-    }
-    if (SSL_connect(ssl) != 1) {
-        fprintf(stderr, "SSL Connection rejected\n");
-        exit(2);
-    }
-
+    	SSL_load_error_strings();
+    	OpenSSL_add_all_algorithms();
+    	new_context = SSL_CTX_new(TLSv1_client_method());
+    	if (new_context == NULL) {
+        	fprintf(stderr, "Unable to get SSL context\n");
+        	exit(2);
+    	}
+    	ssl = SSL_new(new_context);
+    	if (ssl == NULL) {
+        	fprintf(stderr, "Unable to complete SSL setup\n");
+        	exit(2);
+    	}
+    	if (!SSL_set_fd(ssl, sock)) {
+        	fprintf(stderr, "Unable to associate fd w/SSL\n");
+        	exit(2);
+    	}
+    	if (SSL_connect(ssl) != 1) {
+        	fprintf(stderr, "SSL Connection rejected\n");
+        	exit(2);
+    	}
 
 	/* Immediately send (and log) an ID terminated with a newline. */
 	char out[50];
@@ -288,25 +287,25 @@ int main(int argc, char* argv[]) {
 	temp = mraa_aio_init(A0);
 
 	if (temp==NULL) {
-        fprintf(stderr, "Failed to initialize AIO\n");
-        mraa_deinit();
-        exit(1);
-    }
+        	fprintf(stderr, "Failed to initialize AIO\n");
+        	mraa_deinit();
+        	exit(1);
+    	}
 
 	struct pollfd pollInput; 
-    pollInput.fd = sock; 
-    pollInput.events = POLLIN; 
+   	pollInput.fd = sock; 
+    	pollInput.events = POLLIN; 
 
-    char input[256];
+    	char input[256];
 
-    while(1) {
+    	while(1) {
   		time_stamp();
-    	poll(&pollInput, 1, 0);
-    	if (pollInput.revents & POLLIN) {
-    		server_input(input);
-    	}
+    		poll(&pollInput, 1, 0);
+    		if (pollInput.revents & POLLIN) {
+    			server_input(input);
+    		}
 	}
 
 	mraa_aio_close(temp);
-    exit(0);
+   	exit(0);
 }
