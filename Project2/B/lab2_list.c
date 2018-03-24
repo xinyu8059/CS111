@@ -49,56 +49,52 @@ void* thread_function(void *stuff) {
 	unsigned long i;
 	for (i = 0; i < iterations; i++) {
 		unsigned int hash = hash_num( (array+i) -> key);
-
 		clock_gettime(CLOCK_MONOTONIC, &begin);
 		if (opt_sync == 'm') {
-	        pthread_mutex_lock(m_lock + hash);
-	    } else if (opt_sync == 's') {
-	        while (__sync_lock_test_and_set(lock + hash, 1));
-	    }
-	    clock_gettime(CLOCK_MONOTONIC, &end);
+	        	pthread_mutex_lock(m_lock + hash);
+	    	} else if (opt_sync == 's') {
+	    		while (__sync_lock_test_and_set(lock + hash, 1));
+	    	}
+	   	clock_gettime(CLOCK_MONOTONIC, &end);
 		time += 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
-
 		SortedList_insert(head + hash, (SortedListElement_t *) (array+i));
 
-    	if (opt_sync == 'm') {
-        	pthread_mutex_unlock(m_lock + hash);
-   		}
-    	else if (opt_sync == 's') {
-        	__sync_lock_release(lock + hash);
+    		if (opt_sync == 'm') {
+        		pthread_mutex_unlock(m_lock + hash);
+   		} else if (opt_sync == 's') {
+        		__sync_lock_release(lock + hash);
+    		}
+	}
+
+    	// get length of all heads for total list lenght
+    	unsigned long list_length = 0;
+    	for (i = 0; i < lists; i++) {
+     		if (opt_sync == 'm') {
+	        	clock_gettime(CLOCK_MONOTONIC, &begin);
+	        	pthread_mutex_lock(m_lock + i);
+	        	clock_gettime(CLOCK_MONOTONIC, &end);
+	        	time += 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
+      		} else if (opt_sync == 's') {
+         		while (__sync_lock_test_and_set(lock + i, 1));
+      		}
     	}
+
+   	for (i = 0; i < lists; i++) {
+    		list_length += SortedList_length(head + i);
 	}
-
-    // get length of all heads for total list lenght
-    unsigned long list_length = 0;
-    for (i = 0; i < lists; i++) {
-     	if (opt_sync == 'm') {
-	        clock_gettime(CLOCK_MONOTONIC, &begin);
-	        pthread_mutex_lock(m_lock + i);
-	        clock_gettime(CLOCK_MONOTONIC, &end);
-	        time += 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
-      	} else if (opt_sync == 's') {
-         	while (__sync_lock_test_and_set(lock + i, 1));
-      	}
-    }
-
-    for (i = 0; i < lists; i++) {
-      list_length += SortedList_length(head + i);
-	}
-
-
+	
 	if (list_length < iterations) {
 		fprintf(stderr, "Not all items inserted in list.\n");
 		exit(2);
 	}
 
 	for (i = 0; i < lists; i++) {
-      	if (opt_sync == 'm') {
-          	pthread_mutex_unlock(m_lock + i);
-      	} else if (opt_sync == 's') {
-          	__sync_lock_release(lock + i);
-      	}
-    }
+      		if (opt_sync == 'm') {
+          		pthread_mutex_unlock(m_lock + i);
+      		} else if (opt_sync == 's') {
+          		__sync_lock_release(lock + i);
+      		}
+    	}
 
 	char *curr_key = malloc(sizeof(char)*256);
 
@@ -107,37 +103,36 @@ void* thread_function(void *stuff) {
 	for (i = 0; i < iterations; i++) {
 		unsigned int hash = hash_num( (array+i)->key );
 		strcpy(curr_key, (array+i)->key);
-
-	    clock_gettime(CLOCK_MONOTONIC, &begin);
+	    	clock_gettime(CLOCK_MONOTONIC, &begin);
 		if (opt_sync == 'm') {
-	        pthread_mutex_lock(m_lock + hash);
-	    } else if (opt_sync == 's') {
-	        while (__sync_lock_test_and_set(lock + hash, 1));
-	    }
-	    clock_gettime(CLOCK_MONOTONIC, &end);
+	        	pthread_mutex_lock(m_lock + hash);
+	    	} else if (opt_sync == 's') {
+	        	while (__sync_lock_test_and_set(lock + hash, 1));
+	    	}
+	    	clock_gettime(CLOCK_MONOTONIC, &end);
 		time += 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
 
-        ptr = SortedList_lookup(head + hash, curr_key);
-        if (ptr == NULL) {
-            fprintf(stderr, "Failure to look up element\n");
-            exit(2);
-        }
-
+        	ptr = SortedList_lookup(head + hash, curr_key);
+        	if (ptr == NULL) {
+            		fprintf(stderr, "Failure to look up element\n");
+            		exit(2);
+        	}
+		
 		int n = SortedList_delete(ptr);
-        if (n != 0) {
-            fprintf(stderr, "Failure to delete element\n");
-            exit(2);
-        }
+        	if (n != 0) {
+            		fprintf(stderr, "Failure to delete element\n");
+            		exit(2);
+        	}
 
-        if (opt_sync == 'm') {
-        	pthread_mutex_unlock(m_lock + hash);
-   		}
-    	else if (opt_sync == 's') {
-        	__sync_lock_release(lock + hash);
-    	}
+		if (opt_sync == 'm') {
+			pthread_mutex_unlock(m_lock + hash);
+			}
+		else if (opt_sync == 's') {
+			__sync_lock_release(lock + hash);
+		}
 	}
 
-    return (void *) time;
+    	return (void *) time;
 }
 
 int main(int argc, char* argv[]) {
@@ -230,35 +225,36 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (opt_sync == 'm') {
-	    m_lock = malloc(sizeof(pthread_mutex_t) * lists);
-	    if (m_lock == NULL) {
-	      	fprintf(stderr, "Could not allocate memory for mutexes\n");
-	      	exit(1);
-	    }
+	    	m_lock = malloc(sizeof(pthread_mutex_t) * lists);
+	    	if (m_lock == NULL) {
+	      		fprintf(stderr, "Could not allocate memory for mutexes\n");
+	      		exit(1);
+	    	}
 
-	    for (i = 0; i < lists; i++) {
-	      	if (pthread_mutex_init((m_lock + i), NULL) != 0) {
-		        fprintf(stderr, "Could not create mutexes\n");
-		        exit(1);
-	      	}
-	    }
+	    	for (i = 0; i < lists; i++) {
+	      		if (pthread_mutex_init((m_lock + i), NULL) != 0) {
+		        	fprintf(stderr, "Could not create mutexes\n");
+		        	exit(1);
+	      		}
+	    	}
+		
 	} else if (opt_sync == 's') {
-	    lock = malloc(sizeof(int) * lists);
-	    if (lock == NULL) {
-	      fprintf(stderr, "Could not allocate memory for spin locks\n");
-	      exit(1);
-	    }
+	    	lock = malloc(sizeof(int) * lists);
+	    	if (lock == NULL) {
+	      		fprintf(stderr, "Could not allocate memory for spin locks\n");
+	      		exit(1);
+	    	}
 
-	    for (i = 0; i < lists; i++) {
-	      lock[i] = 0;
-	    }
+	    	for (i = 0; i < lists; i++) {
+	      		lock[i] = 0;
+	    	}	
 	}
 
-    pthread_t *thread_ids = malloc(sizeof(pthread_t) * threads);
-    if (thread_ids == NULL) {
-    	fprintf(stderr, "Could not allocate memory for threads\n");
-    	exit(1);
-    }
+    	pthread_t *thread_ids = malloc(sizeof(pthread_t) * threads);
+    	if (thread_ids == NULL) {
+    		fprintf(stderr, "Could not allocate memory for threads\n");
+    		exit(1);
+   	}
 
   	struct timespec begin, end;
   	clock_gettime(CLOCK_MONOTONIC, &begin);
@@ -273,7 +269,6 @@ int main(int argc, char* argv[]) {
   	void** wait = (void *) malloc(sizeof(void**));
 
   	for (i = 0; i < threads; i++){
-
   		pthread_join(thread_ids[i], wait);
   		wait_total += (long) *wait;
   	}
@@ -333,7 +328,7 @@ int main(int argc, char* argv[]) {
 	        break;
 	    default:
 	        break;
-	  }
+	}
 	  
 	long operations = threads * iterations * 3;
 	long run_time = 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
@@ -341,22 +336,21 @@ int main(int argc, char* argv[]) {
 	long num_lists = lists;
 	long wait_for_lock = wait_total/operations;
 
-	  // print rest of data
+	// print rest of data
 	fprintf(stdout, ",%ld,%ld,%ld,%ld,%ld,%ld,%ld\n", threads, iterations, num_lists, operations, run_time, time_per_op, wait_for_lock);
 
 	free(elements);
 	free(thread_ids);
 
   	if (opt_sync == 'm') {
-    	for (i = 0; i < lists; i++){
-    	  pthread_mutex_destroy(m_lock + i);
-    	}
-    	free(m_lock);
+    		for (i = 0; i < lists; i++){
+    	  		pthread_mutex_destroy(m_lock + i);
+    		}
+    		free(m_lock);
  	} else if (opt_sync == 's') {
  		free (lock);
  	}
 
  	free(wait);
 	exit(0);
-
 }
