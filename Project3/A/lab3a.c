@@ -134,13 +134,13 @@ void read_inode(unsigned int inode_table_id, unsigned int index, unsigned int in
 	);
 
 	char ctime[20], mtime[20], atime[20];
-    get_time(inode.i_ctime, ctime); //creation time
-    get_time(inode.i_mtime, mtime); //modification time
-    get_time(inode.i_atime, atime); //access time
-    fprintf(stdout, "%s,%s,%s,", ctime, mtime, atime);
+    	get_time(inode.i_ctime, ctime); //creation time
+    	get_time(inode.i_mtime, mtime); //modification time
+    	get_time(inode.i_atime, atime); //access time
+    	fprintf(stdout, "%s,%s,%s,", ctime, mtime, atime);
 		
 	fprintf(stdout, "%d,%d", 
-	    inode.i_size, //file size
+	    	inode.i_size, //file size
 		num_blocks //number of blocks
 	);
 
@@ -297,24 +297,24 @@ void read_inode_bitmap(int group, int block, int inode_table_id) {
 
 	unsigned long offset = block_offset(block);
 	unsigned int curr = group * superblock.s_inodes_per_group + 1;
-    unsigned int start = curr;
-    pread(disk_fd, bytes, num_bytes, offset);
+    	unsigned int start = curr;
+    	pread(disk_fd, bytes, num_bytes, offset);
 
-    int i, j;
-    for (i = 0; i < num_bytes; i++) {
-    	char x = bytes[i];
-    	for (j = 0; j < 8; j++) {
-    		int used = 1 & x;
-    		if (used) { //inode is allocated
-    			read_inode(inode_table_id, curr - start, curr);
-    		} else { //free inode
-    			fprintf(stdout, "IFREE,%d\n", curr);
+    	int i, j;
+    	for (i = 0; i < num_bytes; i++) {
+    		char x = bytes[i];
+    		for (j = 0; j < 8; j++) {
+    			int used = 1 & x;
+    			if (used) { //inode is allocated
+    				read_inode(inode_table_id, curr - start, curr);
+    			} else { //free inode
+    				fprintf(stdout, "IFREE,%d\n", curr);
+    			}
+    			x >>= 1;
+    			curr++;
     		}
-    		x >>= 1;
-    		curr++;
     	}
-    }
-    free(bytes);
+    	free(bytes);
 }
 
 /* for each group, read bitmaps for blocks and inodes */
@@ -366,7 +366,7 @@ int main (int argc, char* argv[]) {
 		exit(1);
 	}
 
-    struct option options[] = {
+    	struct option options[] = {
 		{0, 0, 0, 0}
 	};
 	int opt;
