@@ -27,34 +27,28 @@ pthread_mutex_t m_lock;
 void add(long long *pointer, long long value) {
 	long long sum = *pointer + value;
 	if (opt_yield) {
-    	sched_yield();
+    		sched_yield();
 	}
-    *pointer = sum;
+   	*pointer = sum;
 }
 
 void add_m(long long *pointer, long long value) {
  	pthread_mutex_lock(&m_lock);
-
   	long long sum = *pointer + value;
   	if (opt_yield) {
    		sched_yield();
 	}
  	*pointer = sum;
-
-
   	pthread_mutex_unlock(&m_lock);
 }
 
 void add_s(long long *pointer, long long value) {
 	while (__sync_lock_test_and_set(&lock, 1));
-
 	long long sum = *pointer + value;
 	if (opt_yield) {
-    	sched_yield();
-    }
-  	
+    		sched_yield();
+    	}
   	*pointer = sum;
-
  	 __sync_lock_release(&lock);
 }
 
@@ -62,9 +56,9 @@ void add_c(long long *pointer, long long value) {
 	long long old;
 	do {
 		old = counter;
-	    if (opt_yield) {
-	     	sched_yield();
-	    }
+	    	if (opt_yield) {
+	     		sched_yield();
+	    	}
   	} while (__sync_val_compare_and_swap(pointer, old, old+value) != old);
 }
 
