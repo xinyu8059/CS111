@@ -1,5 +1,5 @@
 # CS111
-Operating Systems. UCLA CS111, Professor Peter Reiher
+Operating Systems. UCLA CS111, Professor Peter Reiher, Winter 2018.
 
 Scores:
 
