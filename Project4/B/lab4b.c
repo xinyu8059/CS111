@@ -66,8 +66,8 @@ void shutdown() {
 	char out[200];
 	sprintf(out, "%02d:%02d:%02d SHUTDOWN", curr_time->tm_hour, 
     		curr_time->tm_min, curr_time->tm_sec);
-    print(out,1);
-    exit(0);
+    	print(out,1);
+    	exit(0);
 }
 
 /* prints out the time stamp and temperature */
@@ -78,10 +78,10 @@ void time_stamp() {
 		int t = temp * 10;
 		curr_time = localtime(&my_clock.tv_sec);
 		char out[200];
-    	sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
+    		sprintf(out, "%02d:%02d:%02d %d.%1d", curr_time->tm_hour, 
     			curr_time->tm_min, curr_time->tm_sec, t/10, t%10);
-    	print(out,1);
-    	next_time = my_clock.tv_sec + period; 
+    		print(out,1);
+    		next_time = my_clock.tv_sec + period; 
 	}
 }
 
@@ -135,8 +135,8 @@ int main(int argc, char* argv[]) {
 	struct option options[] = {
 		{"period", required_argument, NULL, 'p'},
    		{"scale", required_argument, NULL, 's'},
-    	{"log", required_argument, NULL, 'l'},
-    	{0, 0, 0, 0}
+    		{"log", required_argument, NULL, 'l'},
+    		{0, 0, 0, 0}
 	};
 
 	int opt;
@@ -171,44 +171,44 @@ int main(int argc, char* argv[]) {
 	temp = mraa_aio_init(A0);
 
 	if (temp== NULL) {
-        fprintf(stderr, "Failed to initialize AIO\n");
-        mraa_deinit();
-        return EXIT_FAILURE;
-    }
+        	fprintf(stderr, "Failed to initialize AIO\n");
+        	mraa_deinit();
+        	return EXIT_FAILURE;
+    	}
 
-    button = mraa_gpio_init(GPIO_50);
+    	button = mraa_gpio_init(GPIO_50);
 
-    if (button == NULL) {
-        fprintf(stderr, "Failed to initialize GPIO_50\n");
-        mraa_deinit();
-        return EXIT_FAILURE;
-    }
+    	if (button == NULL) {
+        	fprintf(stderr, "Failed to initialize GPIO_50\n");
+        	mraa_deinit();
+        	return EXIT_FAILURE;
+    	}
 
-    mraa_gpio_dir(button, MRAA_GPIO_IN);
-    mraa_gpio_isr(button, MRAA_GPIO_EDGE_RISING, &shutdown, NULL);
+    	mraa_gpio_dir(button, MRAA_GPIO_IN);
+    	mraa_gpio_isr(button, MRAA_GPIO_EDGE_RISING, &shutdown, NULL);
 
 	struct pollfd pollInput; 
-    pollInput.fd = STDIN_FILENO; 
-    pollInput.events = POLLIN; 
+    		pollInput.fd = STDIN_FILENO; 
+    		pollInput.events = POLLIN; 
 
-    char *input;
-    input = (char *)malloc(1024 * sizeof(char));
-    if(input == NULL) {
-    	fprintf(stderr, "Could not allocate input buffer\n");
-    	exit(1);
-    }
-
-    while(1) {
-  		time_stamp();
-    	int ret = poll(&pollInput, 1, 0);
-    	if(ret) {
-    		fgets(input, 1024, stdin);
-    		process_stdin(input); 
+    	char *input;
+    	input = (char *)malloc(1024 * sizeof(char));
+    	if(input == NULL) {
+    		fprintf(stderr, "Could not allocate input buffer\n");
+    		exit(1);
     	}
+
+    	while(1) {
+  		time_stamp();
+    		int ret = poll(&pollInput, 1, 0);
+    		if(ret) {
+    			fgets(input, 1024, stdin);
+    			process_stdin(input); 
+    		}
 	}
 
 	mraa_aio_close(temp);
-    mraa_gpio_close(button);
+    	mraa_gpio_close(button);
 
-    return 0;
+    	return 0;
 }
