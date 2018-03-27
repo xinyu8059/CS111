@@ -177,11 +177,11 @@ int main (int argc, char* argv[]) {
 							if (input[i] == ETX) {
 								kill(pid, SIGINT); 
 
-						    } else if (input[i] == EOT) {
+						    	} else if (input[i] == EOT) {
 						    	EOT_flag = 1;
 
-						    } else if (input[i] == CR || input[i] == LF) { 
-						    	char lf = LF;
+						    	} else if (input[i] == CR || input[i] == LF) { 
+						    		char lf = LF;
 								write(STDOUT_FILENO, crlf, 2);
 								write(pipe_ptoc[1], &lf, 1);
 							
