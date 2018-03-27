@@ -369,13 +369,10 @@ int main (int argc, char* argv[]) {
     	struct option options[] = {
 		{0, 0, 0, 0}
 	};
-	int opt;
-	while ((opt = getopt_long(argc, argv, "", options, NULL)) != -1) {
-		switch (opt) {
-			default:
-				fprintf(stderr, "Bad arguments\n");
-				exit(1);
-		}
+	
+	if (getopt_long(argc, argv, "", options, NULL) != -1) {
+		fprintf(stderr, "Bad arguments\n");
+		exit(1);
 	}
 
 	if ((disk_fd = open(argv[1], O_RDONLY)) == -1) {
