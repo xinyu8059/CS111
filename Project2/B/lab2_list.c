@@ -34,10 +34,10 @@ void handle_segfault() {
 unsigned int hash_num(const char* key) {
  	int ret = 31;
 
- 	 while (*key) {
-    	ret = 28 * ret ^ *key;
-    	key++;
-  	 }
+ 	while (*key) {
+    		ret = 28 * ret ^ *key;
+    		key++;
+  	}
 
   	return ret % lists;
 }
@@ -126,8 +126,7 @@ void* thread_function(void *stuff) {
 
 		if (opt_sync == 'm') {
 			pthread_mutex_unlock(m_lock + hash);
-			}
-		else if (opt_sync == 's') {
+		} else if (opt_sync == 's') {
 			__sync_lock_release(lock + hash);
 		}
 	}
