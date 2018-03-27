@@ -189,8 +189,8 @@ int main(int argc, char* argv[]) {
 				break;
 			case 'l':
 				file = fopen(optarg, "w+");
-            	if(file == NULL) {
-	           		fprintf(stderr, "Logfile invalid\n");
+            			if(file == NULL) {
+	           			fprintf(stderr, "Logfile invalid\n");
 					exit(1);
 				}
 				break;
