@@ -152,18 +152,16 @@ int main(int argc, char* argv[]) {
 		(elements + i)->key = keys[i];
 	}
 
-	if (opt_sync == 'm') {
-    	if (pthread_mutex_init(&m_lock, NULL) != 0) {
+	if (opt_sync == 'm' && pthread_mutex_init(&m_lock, NULL) != 0) {
       		fprintf(stderr, "Could not create mutex\n");
       		exit(1);
-    	}
   	}
 
-    pthread_t *thread_ids = malloc(sizeof(pthread_t) * threads);
-    if (thread_ids == NULL) {
-    	fprintf(stderr, "Could not allocate memory for threads\n");
-    	exit(1);
-    }
+    	pthread_t *thread_ids = malloc(sizeof(pthread_t) * threads);
+    	if (thread_ids == NULL) {
+    		fprintf(stderr, "Could not allocate memory for threads\n");
+    		exit(1);
+    	}
 
   	struct timespec begin, end;
   	clock_gettime(CLOCK_MONOTONIC, &begin);
