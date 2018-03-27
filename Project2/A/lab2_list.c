@@ -31,11 +31,11 @@ void handle_segfault() {
 
 void* thread_function(void *stuff) {
 	SortedListElement_t* array = stuff;
-    if (opt_sync == 'm') {
-        pthread_mutex_lock(&m_lock);
-    } else if (opt_sync == 's') {
-        while (__sync_lock_test_and_set(&lock, 1));
-    }
+    	if (opt_sync == 'm') {
+        	pthread_mutex_lock(&m_lock);
+    	} else if (opt_sync == 's') {
+        	while (__sync_lock_test_and_set(&lock, 1));
+    	}
 
 	long i;
 	for (i = 0; i < iterations; i++) {
@@ -54,29 +54,26 @@ void* thread_function(void *stuff) {
 
 	for (i = 0; i < iterations; i++) {
 		strcpy(curr_key, (array+i)->key);
-        ptr = SortedList_lookup(&head, curr_key);
-        if (ptr == NULL) {
-            fprintf(stderr, "Failure to look up element");
-            exit(2);
-        }
+        	ptr = SortedList_lookup(&head, curr_key);
+        	if (ptr == NULL) {
+            		fprintf(stderr, "Failure to look up element");
+            		exit(2);
+        	}
 
 		int n = SortedList_delete(ptr);
-        if (n != 0) {
-            fprintf(stderr, "Failure to delete element");
-            exit(2);
-        }
+        	if (n != 0) {
+            		fprintf(stderr, "Failure to delete element");
+            		exit(2);
+        	}
 	}
 
-    // release mutex or lock based on sync options
-    if (opt_sync == 'm') {
-        // unlock the mutex
-        pthread_mutex_unlock(&m_lock);
-    }
-    else if (opt_sync == 's') {
-        // release lock
-        __sync_lock_release(&lock);
-    }
-    return NULL;
+    	// release mutex or lock based on sync options
+    	if (opt_sync == 'm') { // unlock the mutex
+        	pthread_mutex_unlock(&m_lock);
+	} else if (opt_sync == 's') { // release lock
+       		__sync_lock_release(&lock);
+    	}
+    	return NULL;
 }
 
 int main(int argc, char* argv[]) {
@@ -187,55 +184,55 @@ int main(int argc, char* argv[]) {
   	fprintf(stdout, "list");
 
 	switch(opt_yield) {
-	    case 0:
-	        fprintf(stdout, "-none");
-	        break;
-	    case 1:
-	        fprintf(stdout, "-i");
-	        break;
-	    case 2:
-	        fprintf(stdout, "-d");
-	        break;
-	    case 3:
-	        fprintf(stdout, "-id");
-	        break;
-	    case 4:
-	        fprintf(stdout, "-l");
-	        break;
-	    case 5:
-	        fprintf(stdout, "-il");
-	        break;
-	    case 6:
-	        fprintf(stdout, "-dl");
-	        break;
-	    case 7:
-	        fprintf(stdout, "-idl");
-	        break;
-	    default:
-	        break;
+	    	case 0:
+			fprintf(stdout, "-none");
+			break;
+	    	case 1:
+			fprintf(stdout, "-i");
+			break;
+	   	case 2:
+			fprintf(stdout, "-d");
+			break;
+	    	case 3:
+			fprintf(stdout, "-id");
+			break;
+	    	case 4:
+			fprintf(stdout, "-l");
+			break;
+	    	case 5:
+			fprintf(stdout, "-il");
+			break;
+	    	case 6:
+			fprintf(stdout, "-dl");
+			break;
+	    	case 7:
+			fprintf(stdout, "-idl");
+			break;
+	    	default:
+	        	break;
 	}
 
 	  
 	switch(opt_sync) {
-	    case 0:
-	        fprintf(stdout, "-none");
-	        break;
-	    case 's':
-	        fprintf(stdout, "-s");
-	        break;
-	    case 'm':
-	        fprintf(stdout, "-m");
-	        break;
-	    default:
-	        break;
-	  }
+	    	case 0:
+	        	fprintf(stdout, "-none");
+	        	break;
+	    	case 's':
+	        	fprintf(stdout, "-s");
+	        	break;
+	    	case 'm':
+	        	fprintf(stdout, "-m");
+	        	break;
+	    	default:
+	        	break;
+	}
 	  
 	long operations = threads * iterations * 3;
 	long run_time = 1000000000L * (end.tv_sec - begin.tv_sec) + end.tv_nsec - begin.tv_nsec;
 	long time_per_op = run_time / operations;
 	long num_lists = 1;
 
-	  // print rest of data
+	// print rest of data
 	fprintf(stdout, ",%ld,%ld,%ld,%ld,%ld,%ld\n", threads, iterations, num_lists, operations, run_time, time_per_op);
 
 	free(elements);
@@ -246,5 +243,4 @@ int main(int argc, char* argv[]) {
 	}
 
 	exit(0);
-
 }
