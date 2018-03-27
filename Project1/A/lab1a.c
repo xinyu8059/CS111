@@ -178,7 +178,7 @@ int main (int argc, char* argv[]) {
 								kill(pid, SIGINT); 
 
 						    	} else if (input[i] == EOT) {
-						    	EOT_flag = 1;
+						    		EOT_flag = 1;
 
 						    	} else if (input[i] == CR || input[i] == LF) { 
 						    		char lf = LF;
