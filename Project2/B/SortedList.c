@@ -20,7 +20,7 @@ void SortedList_insert(SortedList_t *list, SortedListElement_t *element) {
 	if (list->next == NULL) {
 		/* critical section */
 		if (opt_yield & INSERT_YIELD) {
-		  sched_yield();
+			sched_yield();
 		}
 		list->next = element;
 		element->prev = list;
