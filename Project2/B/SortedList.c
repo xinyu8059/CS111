@@ -67,7 +67,7 @@ int SortedList_delete(SortedListElement_t *element) {
         	if (element->next->prev != element) {
             		return 1;
         	} else {
-           	 element->next->prev = element->prev;
+           	 	element->next->prev = element->prev;
         	}
  	}
 
