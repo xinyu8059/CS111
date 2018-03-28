@@ -20,7 +20,7 @@ Lab 2B: 99%
 
 Lab 3A: 96%
 
-Lab 3B: Not yet graded
+Lab 3B: 99%
 
 Lab 4A: 100%
 
