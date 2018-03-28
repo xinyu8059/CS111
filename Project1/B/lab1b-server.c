@@ -324,7 +324,6 @@ int main(int argc, char* argv[]) {
 		close(pipe_ctop[0]);
 		close(pipe_ptoc[1]);
 		shell_exit_status();
-		exit(0);
 
 	} else { //fork failed
 		fprintf(stderr, "Could not fork process.\n");
@@ -335,4 +334,5 @@ int main(int argc, char* argv[]) {
 		inflateEnd(&client_to_server);
 		deflateEnd(&server_to_client);
 	}
+	exit(0);
 }
