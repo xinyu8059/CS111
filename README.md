@@ -26,4 +26,4 @@ Lab 4A: 100%
 
 Lab 4B: 100%
 
-Lab 4C: Not yet graded
+Lab 4C: 99%
