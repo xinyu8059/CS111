@@ -27,3 +27,5 @@ Lab 4A: 100%
 Lab 4B: 100%
 
 Lab 4C: 99%
+
+Final Exam: 143/150 (Mean: 117.12, Standard Deviation: 21.64)
